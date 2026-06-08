@@ -1,4 +1,4 @@
-package modelo.Monedas;
+package src.Monedas;
 
 public abstract class Moneda implements Comparable<Moneda> {  
     /** clase que represneta una moneda en el sistema

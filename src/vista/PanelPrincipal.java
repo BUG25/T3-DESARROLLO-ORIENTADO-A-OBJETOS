@@ -21,7 +21,7 @@ public class PanelPrincipal extends JPanel {//se ve en el centro de la ventana
         comprador.setPanelExpendedor(expendedor);
 
         this.setBackground(Color.white);
-        this.setPreferredSize(new Dimension(850, 650));
+        this.setPreferredSize(new Dimension( 850, 700));
         agregarMouseListener();
     }
     private void agregarMouseListener() {
@@ -49,6 +49,7 @@ public class PanelPrincipal extends JPanel {//se ve en el centro de la ventana
 
         Graphics2D g2 = (Graphics2D) g;
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
 
         // Dibujar línea divisoria entre ambos paneles (opcional)
         g2.setColor(new Color(100, 100, 120));

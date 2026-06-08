@@ -58,7 +58,7 @@ public class PanelExpendedor extends JPanel {
     // Zona de vuelto
     private final int vueltoX = 110;
     private final int vueltoY = 390;
-    private final int vueltoAncho = 290;
+    private final int vueltoAncho = 270;
     private final int vueltoAlto = 60;
 
     // Mensaje de estado

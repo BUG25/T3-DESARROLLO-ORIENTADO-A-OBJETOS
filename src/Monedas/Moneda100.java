@@ -1,4 +1,4 @@
-package modelo.Monedas;
+package src.Monedas;
 
 public class Moneda100 extends Moneda{
     /** constructor de la clase Moneda100
