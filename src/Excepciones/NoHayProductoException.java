@@ -1,4 +1,4 @@
-package modelo.excepciones;
+package src.Excepciones;
 
 /** Excepción lanzada cuando el depósito del producto seleccionado está vacío. */
 public class NoHayProductoException extends Exception {
