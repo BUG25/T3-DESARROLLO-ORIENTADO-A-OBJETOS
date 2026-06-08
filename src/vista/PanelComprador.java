@@ -274,11 +274,10 @@ public class PanelComprador {
 
         saldo -= monedaSeleccionada.getValor();
         try {
-            maquina.comprarProducto(monedaSeleccionada, seleccionActual);
-            Producto p = maquina.getProducto();
+            Producto p = maquina.comprarProducto(monedaSeleccionada, seleccionActual);
             if (p != null) {
                 productosObtenidos.add(p);
-                historial.add("✓ " + p.getNombre() + " #" + p.getNumSerie());
+                historial.add("✓ " + p.getNombre() + " #" + p.getID());
                 mensajeEstado = "¡Disfruta tu " + p.getNombre() + "!";
             }
         } catch (PagoIncorrectoException | PagoInsuficienteException | NoHayProductoException ex) {

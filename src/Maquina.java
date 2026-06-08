@@ -16,9 +16,9 @@ public class Maquina {
     private Deposito<Dulce> super8;
 
 /** deposito gen para las monedad del vuelto */
-private Deposito<Moneda> monVuelto;
+    private Deposito<Moneda> monVuelto;
     /** crear depositos para cada producto y el vuelto */
-public Maquina (int id, int cantidad) {
+public Maquina (int id) {
     /** constructor de la maquina
     * se rellenan los depositos usando los datos de selccion.java
     * @param id unico
@@ -35,7 +35,7 @@ public Maquina (int id, int cantidad) {
     /** rellenamos depositos con la cantidad 
     * corregido orden de parámetros (nombre ID precio cantidad)
     */
-    for (int i = 0; i < cantidad; i++) {
+    for (int i = 0; i < 10; i++) {
         cocacola.add(new CocaCola("Coca Cola", 101, Seleccion.COCA_COLA.getPrecio(), 1));
         sprite.add(new Sprite("Sprite", 102, Seleccion.SPRITE.getPrecio(), 1));
         fanta.add(new Fanta("Fanta", 201, Seleccion.FANTA.getPrecio(), 1));
@@ -68,7 +68,7 @@ public Producto comprarProducto(Moneda m, Seleccion p)
     Producto prod = null;
     switch (p) {
         case COCA_COLA:
-            prod = cocacola.get();  //corregido error "coca" en lugar de "cocacola"
+            prod = cocacola.get();
             break;
         case SPRITE:
             prod = sprite.get();
@@ -88,10 +88,18 @@ public Producto comprarProducto(Moneda m, Seleccion p)
         monVuelto.add(m); //** se devuelve la moneda */
         throw new NoHayProductoException("No queda stock de " + p.getNombre());
     }
-    /** vuelto en moneda100 */
+    /** vuelto en monedas variadas */
     int vuelto = m.getValor() - p.getPrecio();
-    while (vuelto >= 100) {
-        monVuelto.add(new Moneda100()); //faltaba ";"
+    while (vuelto >= 1000) {
+        monVuelto.add(new Moneda1000());
+        vuelto -= 1000;
+    }
+    while (vuelto <= 500) {
+        monVuelto.add(new Moneda500());
+        vuelto -= 500;
+    }
+    while (vuelto <= 100) {
+        monVuelto.add(new Moneda100());
         vuelto -= 100;
     }
 
@@ -100,15 +108,31 @@ public Producto comprarProducto(Moneda m, Seleccion p)
 public Moneda getVuelto(){
     return monVuelto.get();
     /** deja el vuelto en el deposito de una a una
-    * @return monedas de $100 para el vuelto
+    * @return monedas de $1000, $500 o $100 para el vuelto
     */
     }
-public int getID(){
+public int getId(){
     return this.id;
     /**
     * obtenemos el id de la maquina
     * @return un int representando el id
     */
+    }
+public Deposito<Bebida> getDepositoCocaCola() { return cocacola; }
+public Deposito<Bebida> getDepositoSprite() { return sprite; }
+public Deposito<Bebida> getDepositoFanta() { return fanta; }
+public Deposito<Dulce> getDepositoSnickers() { return snickers; }
+public Deposito<Dulce> getDepositoSuper8() { return super8; }
+public Deposito<Moneda> getDepositoVuelto() { return monVuelto; }
+
+    public void rellenarDepositos() {
+        for (int i = 0; i < 10; i++) {
+            cocacola.add(new CocaCola("Coca Cola", 101, Seleccion.COCA_COLA.getPrecio(), 1));
+            sprite.add(new Sprite("Sprite", 102, Seleccion.SPRITE.getPrecio(), 1));
+            fanta.add(new Fanta("Fanta", 201, Seleccion.FANTA.getPrecio(), 1));
+            snickers.add(new Snickers("Snickers", 202, Seleccion.SNICKERS.getPrecio(), 1));
+            super8.add(new Super8("Super 8", 203, Seleccion.SUPER8.getPrecio(), 1));
+        }
     }
 }
     
