@@ -1,4 +1,4 @@
-package modelo.depositos;
+package src.Depositos;
 
 import java.util.ArrayList;
 

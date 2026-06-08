@@ -1,4 +1,4 @@
-package modelo;
+package src;
 
 /**
  * Enumeración de productos disponibles en la máquina expendedora.

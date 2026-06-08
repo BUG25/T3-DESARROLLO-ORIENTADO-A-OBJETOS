@@ -1,13 +1,10 @@
-package vista;
+package src.vista;
 
-import modelo.Maquina;
-import modelo.Seleccion;
-import modelo.depositos.Deposito;
-import modelo.excepciones.*;
-import modelo.monedas.Moneda;
-import modelo.productos.Producto;
-import modelo.productos.bebidas.Bebida;
-import modelo.productos.dulces.Dulce;
+import src.Maquina;
+import src.Seleccion;
+import src.Depositos.Deposito;
+import src.Monedas.Moneda;
+import src.Productos.Producto;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
