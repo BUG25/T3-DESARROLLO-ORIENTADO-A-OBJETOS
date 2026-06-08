@@ -94,15 +94,14 @@ public Producto comprarProducto(Moneda m, Seleccion p)
         monVuelto.add(new Moneda1000());
         vuelto -= 1000;
     }
-    while (vuelto <= 500) {
+    while (vuelto >= 500) {
         monVuelto.add(new Moneda500());
         vuelto -= 500;
     }
-    while (vuelto <= 100) {
+    while (vuelto >= 100) {
         monVuelto.add(new Moneda100());
         vuelto -= 100;
     }
-
     return prod;
 }
 public Moneda getVuelto(){

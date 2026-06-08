@@ -6,6 +6,7 @@ import src.Excepciones.*;
 import src.Monedas.*;
 import src.Productos.Producto;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -16,13 +17,15 @@ import java.util.List;
  * Se dibuja con zonas clicables para elegir producto y tipo de moneda.
  * Gestiona el saldo, historial de compras y recolección de vuelto/producto.
  */
-public class PanelComprador {
+public class PanelComprador extends JPanel {
 
     private int x, y;
     private final int ancho = 300;
     private final int alto = 560;
 
     private final Maquina maquina;
+    private PanelExpendedor panelExpendedor;
+    private PanelPrincipal panelPrincipal;
 
     // Estado del comprador
     private int saldo;
@@ -70,6 +73,12 @@ public class PanelComprador {
         this.historial = new ArrayList<>();
         this.mensajeEstado = "Selecciona producto y moneda";
         inicializarMonedero();
+    }
+    public void setPanelExpendedor(PanelExpendedor panel) {
+        this.panelExpendedor = panel;
+    }
+    public void setPanelPrincipal(PanelPrincipal panel) {
+        this.panelPrincipal = panel;
     }
 
     /** Agrega monedas iniciales al monedero. */
@@ -268,9 +277,18 @@ public class PanelComprador {
 
     /** Ejecuta la lógica de compra usando el modelo. */
     private void realizarCompra() {
-        if (seleccionActual == null) { mensajeEstado = "Elige un producto primero"; return; }
-        if (monedaSeleccionada == null) { mensajeEstado = "Elige una moneda primero"; return; }
-        if (saldo < monedaSeleccionada.getValor()) { mensajeEstado = "Sin saldo suficiente"; return; }
+        if (seleccionActual == null) {
+            mensajeEstado = "Elige un producto primero";
+            return;
+        }
+        if (monedaSeleccionada == null) {
+            mensajeEstado = "Elige una moneda primero";
+            return;
+        }
+        if (saldo < monedaSeleccionada.getValor()) {
+            mensajeEstado = "Sin saldo suficiente";
+            return;
+        }
 
         saldo -= monedaSeleccionada.getValor();
         try {
@@ -279,32 +297,50 @@ public class PanelComprador {
                 productosObtenidos.add(p);
                 historial.add("✓ " + p.getNombre() + " #" + p.getID());
                 mensajeEstado = "¡Disfruta tu " + p.getNombre() + "!";
+                if (panelExpendedor != null) {
+                    panelExpendedor.actualizarProductoEntregado(p);
+                }
             }
         } catch (PagoIncorrectoException | PagoInsuficienteException | NoHayProductoException ex) {
             historial.add("✗ " + ex.getMessage());
             mensajeEstado = ex.getMessage();
+
             // recuperar moneda devuelta al vuelto
             Moneda m = maquina.getVuelto();
             while (m != null) { monedero.add(m); saldo += m.getValor(); m = maquina.getVuelto(); }
         }
         monedaSeleccionada = null;
+        if (panelPrincipal != null) {
+            panelPrincipal.repaint();
+        } else if (panelExpendedor != null) {
+            // Fallback: intentar repaint del expendedor
+            panelExpendedor.repaint();
+        }
     }
 
     /** Recoge todas las monedas de vuelto de la máquina y las agrega al monedero. */
     private void tomarVuelto() {
         Moneda m = maquina.getVuelto();
         int total = 0;
+        int contador = 0;
         while (m != null) {
             monedero.add(m);
             saldo += m.getValor();
             total += m.getValor();
+            contador++;
             m = maquina.getVuelto();
         }
         if (total > 0) {
-            historial.add("← Vuelto: $" + total);
+            historial.add("← Vuelto: $" + total + " (" + contador + " monedas)");
             mensajeEstado = "Vuelto recogido: $" + total;
         } else {
             mensajeEstado = "No hay vuelto pendiente";
+        }
+        if (panelPrincipal != null) {
+            panelPrincipal.repaint();
+        }
+        else if (panelExpendedor != null) {
+            panelExpendedor.repaint();
         }
     }
 
@@ -321,4 +357,9 @@ public class PanelComprador {
         if (valor == 500)  return new Color(150, 150, 160);
         return new Color(210, 180, 60);
     }
+    public int getX() { return x; }
+    public int getY() { return y; }
+    public int getAncho() { return ancho; }
+    public int getAlto() { return alto; }
+    public void setMensajeEstado(String msg) { this.mensajeEstado = msg; }
 }

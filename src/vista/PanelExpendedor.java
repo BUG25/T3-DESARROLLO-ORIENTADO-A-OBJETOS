@@ -6,6 +6,7 @@ import src.Depositos.Deposito;
 import src.Monedas.Moneda;
 import src.Productos.Producto;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.Map;
  * Vista y controlador del expendedor.
  * Se dibuja como un rectángulo con depósitos visibles y maneja clicks del mouse.
  */
-public class PanelExpendedor {
+public class PanelExpendedor extends JPanel {
 
     // Posición y tamaño en el panel principal
     private int x, y;
@@ -24,6 +25,7 @@ public class PanelExpendedor {
     private final int alto = 560;
 
     private final Maquina maquina;
+    private Producto productoEntregado;
 
     // Colores por producto
     private static final Map<Seleccion, Color> COLORES = new LinkedHashMap<>();
@@ -73,7 +75,14 @@ public class PanelExpendedor {
         this.y = y;
         this.maquina = maquina;
     }
-
+    /**
+     * Actualiza el producto que se muestra en la zona de entrega.
+     * Llamado por PanelComprador después de una compra exitosa.
+     */
+    public void actualizarProductoEntregado(Producto p) {
+        this.productoEntregado = p;
+        this.mensajeEstado = "Producto entregado: " + p.getNombre();
+    }
     /**
      * Dibuja el expendedor completo: cuerpo, cristal, depósitos, zonas de entrega y vuelto.
      * @param g contexto gráfico
@@ -101,16 +110,12 @@ public class PanelExpendedor {
         g2.setStroke(new BasicStroke(2));
         g2.drawRoundRect(x + 10, y + 35, ancho - 20, colAlto + colY - 20, 10, 10);
 
-        // Depósitos de productos
-        Deposito<?>[] depositos = {
-            maquina.getDepositoCocaCola(), maquina.getDepositoSprite(),
-            maquina.getDepositoFanta(), maquina.getDepositoSnickers(),
-            maquina.getDepositoSuper8()
-        };
-
-        for (int i = 0; i < orden.length; i++) {
-            dibujarDepositoProducto(g2, colX[i], colY, colAncho, colAlto, orden[i], depositos[i]);
-        }
+        // Depósitos
+        dibujarDepositoProducto(g2, colX[0], colY, colAncho, colAlto, Seleccion.COCA_COLA, maquina.getDepositoCocaCola());
+        dibujarDepositoProducto(g2, colX[1], colY, colAncho, colAlto, Seleccion.SPRITE, maquina.getDepositoSprite());
+        dibujarDepositoProducto(g2, colX[2], colY, colAncho, colAlto, Seleccion.FANTA, maquina.getDepositoFanta());
+        dibujarDepositoProducto(g2, colX[3], colY, colAncho, colAlto, Seleccion.SNICKERS, maquina.getDepositoSnickers());
+        dibujarDepositoProducto(g2, colX[4], colY, colAncho, colAlto, Seleccion.SUPER8, maquina.getDepositoSuper8());
 
         // Zona de producto entregado
         dibujarZonaEntrega(g2);
@@ -170,7 +175,7 @@ public class PanelExpendedor {
             if (prod instanceof Producto) {
                 g2.setColor(Color.WHITE);
                 g2.setFont(new Font("Arial", Font.PLAIN, 7));
-                g2.drawString("#" + ((Producto) prod).getNumSerie(), ax + 7, iy + 17);
+                g2.drawString("#" + ((Producto) prod).getID(), ax + 7, iy + 17);
             }
         }
 
@@ -197,19 +202,20 @@ public class PanelExpendedor {
         g2.setFont(new Font("Arial", Font.BOLD, 9));
         g2.drawString("PRODUCTO", ax + 5, ay + 12);
 
-        Producto p = maquina.getProductoEntregado();
-        if (p != null) {
+        if (productoEntregado != null) {
             // buscar color del producto
             Color col = Color.GRAY;
             for (Seleccion s : Seleccion.values()) {
-                if (s.getNombre().equals(p.getNombre())) { col = COLORES.get(s); break; }
+                        if (s.getNombre().equals(productoEntregado.getNombre())) {
+                    col = COLORES.get(s); break;
+                }
             }
             g2.setColor(col);
             g2.fillRoundRect(ax + 8, ay + 18, entregaAncho - 16, 32, 6, 6);
             g2.setColor(Color.WHITE);
             g2.setFont(new Font("Arial", Font.PLAIN, 8));
-            g2.drawString(p.getNombre(), ax + 10, ay + 32);
-            g2.drawString("#" + p.getNumSerie(), ax + 10, ay + 44);
+            g2.drawString(productoEntregado.getNombre(), ax + 10, ay + 32);
+            g2.drawString("#" + productoEntregado.getID(), ax + 10, ay + 44);
         } else {
             g2.setColor(new Color(80, 80, 90));
             g2.fillRoundRect(ax + 8, ay + 18, entregaAncho - 16, 32, 6, 6);
@@ -241,25 +247,38 @@ public class PanelExpendedor {
         int cx = ax + 8;
         int cy = ay + 20;
         int radio = 12;
-        for (int i = 0; i < Math.min(monedas.size(), 18); i++) {
-            Moneda m = monedas.get(i);
-            Color cm = colorMoneda(m.getValor());
-            g2.setColor(cm);
-            g2.fillOval(cx, cy, radio * 2, radio * 2);
-            g2.setColor(cm.darker());
-            g2.setStroke(new BasicStroke(1));
-            g2.drawOval(cx, cy, radio * 2, radio * 2);
-            g2.setColor(Color.WHITE);
-            g2.setFont(new Font("Arial", Font.BOLD, 7));
-            String label = m.getValor() == 100 ? "1c" : (m.getValor() == 500 ? "5c" : "1k");
-            g2.drawString(label, cx + 3, cy + 16);
-            cx += radio * 2 + 3;
-            if (cx > ax + vueltoAncho - 30) { cx = ax + 8; cy += radio * 2 + 3; }
-        }
-        if (monedas.size() > 18) {
-            g2.setColor(Color.YELLOW);
-            g2.setFont(new Font("Arial", Font.PLAIN, 8));
-            g2.drawString("+" + (monedas.size() - 18) + " más", ax + vueltoAncho - 40, ay + vueltoAlto - 5);
+        if (monedas.isEmpty()) {
+            g2.setColor(new Color(80, 80, 90));
+            g2.fillRoundRect(ax + 8, ay + 18, vueltoAncho - 16, 32, 6, 6);
+            g2.setColor(new Color(150, 150, 150));
+            g2.setFont(new Font("Arial", Font.ITALIC, 9));
+            g2.drawString("Sin vuelto", ax + vueltoAncho / 2 - 25, ay + 38);
+        } else {
+            for (int i = 0; i < Math.min(monedas.size(), 24); i++) { // Máximo 24 monedas visibles
+                Moneda m = monedas.get(i);
+                Color cm = colorMoneda(m.getValor());
+                g2.setColor(cm);
+                g2.fillOval(cx, cy, radio * 2, radio * 2);
+                g2.setColor(cm.darker());
+                g2.setStroke(new BasicStroke(1));
+                g2.drawOval(cx, cy, radio * 2, radio * 2);
+                g2.setColor(Color.WHITE);
+                g2.setFont(new Font("Arial", Font.BOLD, 7));
+                String label = (m.getValor() / 100) + "$";
+                g2.drawString(label, cx + 6, cy + 16);
+
+                cx += radio * 2 + 3;
+                if (cx > ax + vueltoAncho - 30) {
+                    cx = ax + 8;
+                    cy += radio * 2 + 3;
+                    if (cy > ay + vueltoAlto - 30) break; // Salir si no hay más espacio
+                }
+            }
+            if (monedas.size() > 24) {
+                g2.setColor(Color.YELLOW);
+                g2.setFont(new Font("Arial", Font.PLAIN, 8));
+                g2.drawString("+" + (monedas.size() - 24) + " más", ax + vueltoAncho - 45, ay + vueltoAlto - 8);
+            }
         }
     }
 
