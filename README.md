@@ -1,3 +1,3 @@
-·Diego Alonso Alday Cortés \n
-Josefa Valentina Arriagada Valiente \n
-Trinidad Agustina Castro Castro \n 
+·Diego Alonso Alday Cortés
+Josefa Valentina Arriagada Valiente 
+Trinidad Agustina Castro Castro
