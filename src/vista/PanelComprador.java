@@ -41,7 +41,7 @@ public class PanelComprador extends JPanel {
     private static final int ZONA_PROD_Y = 50;
     private static final int ZONA_PROD_ANCHO = 280;
     private static final int ZONA_PROD_ALTO = 30;
-    private static final int ZONA_PROD_GAP = 6;
+    private static final int ZONA_PROD_GAP = 4;
 
     // Zonas de monedas
     private static final int ZONA_MON_Y = 240;
@@ -67,7 +67,7 @@ public class PanelComprador extends JPanel {
         this.x = x;
         this.y = y;
         this.maquina = maquina;
-        this.saldo = 5000;
+        this.saldo = 5500;
         this.monedero = new ArrayList<>();
         this.productosObtenidos = new ArrayList<>();
         this.historial = new ArrayList<>();

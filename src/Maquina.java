@@ -35,12 +35,12 @@ public Maquina (int id) {
     /** rellenamos depositos con la cantidad 
     * corregido orden de parámetros (nombre ID precio cantidad)
     */
-    for (int i = 0; i < 10; i++) {
-        cocacola.add(new CocaCola("Coca Cola", 101, Seleccion.COCA_COLA.getPrecio(), 1));
-        sprite.add(new Sprite("Sprite", 102, Seleccion.SPRITE.getPrecio(), 1));
-        fanta.add(new Fanta("Fanta", 201, Seleccion.FANTA.getPrecio(), 1));
-        snickers.add(new Snickers("Snickers", 202, Seleccion.SNICKERS.getPrecio(), 1));
-        super8.add(new Super8("Super 8", 203, Seleccion.SUPER8.getPrecio(), 1));
+    for (int i = 0; i < 8; i++) {
+        cocacola.add(new CocaCola("Coca Cola", 100 + i, Seleccion.COCA_COLA.getPrecio(), 1));
+        sprite.add(new Sprite("Sprite", 200 + i, Seleccion.SPRITE.getPrecio(), 1));
+        fanta.add(new Fanta("Fanta", 300 + i, Seleccion.FANTA.getPrecio(), 1));
+        snickers.add(new Snickers("Snickers", 400 + i, Seleccion.SNICKERS.getPrecio(), 1));
+        super8.add(new Super8("Super 8", 500 + i, Seleccion.SUPER8.getPrecio(), 1));
     }
 }
 public Producto comprarProducto(Moneda m, Seleccion p)
@@ -125,12 +125,12 @@ public Deposito<Dulce> getDepositoSuper8() { return super8; }
 public Deposito<Moneda> getDepositoVuelto() { return monVuelto; }
 
     public void rellenarDepositos() {
-        for (int i = 0; i < 10; i++) {
-            cocacola.add(new CocaCola("Coca Cola", 101, Seleccion.COCA_COLA.getPrecio(), 1));
-            sprite.add(new Sprite("Sprite", 102, Seleccion.SPRITE.getPrecio(), 1));
-            fanta.add(new Fanta("Fanta", 201, Seleccion.FANTA.getPrecio(), 1));
-            snickers.add(new Snickers("Snickers", 202, Seleccion.SNICKERS.getPrecio(), 1));
-            super8.add(new Super8("Super 8", 203, Seleccion.SUPER8.getPrecio(), 1));
+        for (int i = 0; i < 8; i++) {
+            cocacola.add(new CocaCola("Coca Cola", 100 + i, Seleccion.COCA_COLA.getPrecio(), 1));
+            sprite.add(new Sprite("Sprite", 200 + i, Seleccion.SPRITE.getPrecio(), 1));
+            fanta.add(new Fanta("Fanta", 300 + i, Seleccion.FANTA.getPrecio(), 1));
+            snickers.add(new Snickers("Snickers", 400 + i, Seleccion.SNICKERS.getPrecio(), 1));
+            super8.add(new Super8("Super 8", 500 + i, Seleccion.SUPER8.getPrecio(), 1));
         }
     }
 }
