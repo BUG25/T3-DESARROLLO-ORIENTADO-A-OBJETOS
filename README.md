@@ -6,4 +6,4 @@
 - Trinidad Agustina Castro Castro
 
 ## Diagrama UML
-![UML](.)
+![UML](UML.png)
