@@ -9,4 +9,7 @@
 ![UML](UML.png)
 
 ## Estructura del proyecto 
+![UML](Estructura.png)
 
+## Captura de interfaz
+![UML](Prueba.png)
