@@ -9,22 +9,4 @@
 ![UML](UML.png)
 
 ## Estructura del proyecto 
-T3-DESARROLLO-ORIENTADO-A-OBJETOS/
-├── src/
-│   ├── Depositos/
-│   │   └── Deposito.java
-│   ├── Monedas/
-│   │   ├── Moneda.java
-│   │   ├── Moneda100.java
-│   │   ├── Moneda500.java
-│   │   └── Moneda1000.java
-│   ├── Productos/
-│   │   └── Producto.java
-│   ├── vista/
-│   │   ├── PanelComprador.java
-│   │   ├── PanelExpendedor.java
-│   │   ├── PanelPrincipal.java
-│   │   └── Ventana.java
-│   ├── Maquina.java
-│   └── Seleccion.java
-└── doc/ (Carpeta Javadoc generada automáticamente)
+
