@@ -1,0 +1,224 @@
+@startuml
+class src.Excepciones.PagoInsuficienteException {
+}
+abstract class src.Productos.Dulces.Dulce {
++ {abstract}String getSabor()
+}
+
+class src.vista.Ventana {
++ {static} void main(String[])
+}
+
+class src.vista.PanelPrincipal {
+- PanelComprador comprador
+- PanelExpendedor expendedor
+- Maquina maquina
+- void agregarMouseListener()
++ void paintComponent(Graphics)
++ void actualizarVista()
++ PanelComprador getComprador()
++ PanelExpendedor getExpendedor()
++ Maquina getMaquina()
+}
+
+
+class src.Productos.Dulces.Super8 {
++ String getSabor()
+}
+
+class src.Productos.Dulces.Snickers {
++ String getSabor()
+}
+
+class src.Excepciones.NoHayProductoException {
+}
+class src.Productos.Bebidas.CocaCola {
++ String getSabor()
+}
+
+abstract class src.Monedas.Moneda {
+- int valor
+- int serie
+- {static} int contadorSeries
++ int getValor()
++ int getSerie()
++ int compareTo(Moneda)
++ String toString()
+}
+
+
+class src.vista.PanelComprador {
+- int x
+- int ancho
+- int alto
+- Maquina maquina
+- PanelExpendedor panelExpendedor
+- PanelPrincipal panelPrincipal
+- int saldo
+- List<Moneda> monedero
+- List<Producto> productosObtenidos
+- List<String> historial
+- Seleccion seleccionActual
+- Moneda monedaSeleccionada
+- String mensajeEstado
+- {static} int ZONA_PROD_X
+- {static} int ZONA_PROD_Y
+- {static} int ZONA_PROD_ANCHO
+- {static} int ZONA_PROD_ALTO
+- {static} int ZONA_PROD_GAP
+- {static} int ZONA_MON_Y
+- {static} int ZONA_MON_ANCHO
+- {static} int ZONA_MON_ALTO
+- {static} Color[] COLORES_PROD
++ void setPanelExpendedor(PanelExpendedor)
++ void setPanelPrincipal(PanelPrincipal)
+- void inicializarMonedero()
++ void paintComponent(Graphics)
++ boolean handleMouseClick(MouseEvent)
+- void realizarCompra()
+- void tomarVuelto()
+- Moneda crearMoneda(int)
+- Color colorMoneda(int)
++ int getX()
++ int getY()
++ int getAncho()
++ int getAlto()
++ void setMensajeEstado(String)
+}
+
+
+class src.Depositos.Deposito {
+- ArrayList<T> lista
++ void add(T)
++ T get()
++ int size()
++ boolean isEmpty()
++ ArrayList<T> getLista()
+}
+
+
+class src.Productos.Bebidas.Sprite {
++ String getSabor()
+}
+
+enum src.Seleccion {
++  COCA_COLA
++  SPRITE
++  FANTA
++  SNICKERS
++  SUPER8
+- int precio
+- int ID
+- String nombre
++ int getPrecio()
++ int getID()
++ String getNombre()
+}
+
+
+class src.Monedas.Moneda1000 {
+}
+class src.Monedas.Moneda500 {
+}
+class src.Monedas.Moneda100 {
+}
+class src.Productos.Bebidas.Fanta {
++ String getSabor()
+}
+
+class src.vista.PanelExpendedor {
+- int x
+- int ancho
+- int alto
+- Maquina maquina
+- Producto productoEntregado
+- {static} Map<Seleccion,Color> COLORES
+- Seleccion[] orden
+- int[] colX
+- int colY
+- int colAncho
+- int colAlto
+- int entregaX
+- int entregaY
+- int entregaAncho
+- int entregaAlto
+- int vueltoX
+- int vueltoY
+- int vueltoAncho
+- int vueltoAlto
+- String mensajeEstado
++ void actualizarProductoEntregado(Producto)
++ void paintComponent(Graphics)
+- void dibujarDepositoProducto(Graphics2D,int,int,int,int,Seleccion,Deposito<?>)
+- void dibujarZonaEntrega(Graphics2D)
+- void dibujarZonaVuelto(Graphics2D)
++ boolean handleMouseClick(MouseEvent)
+- Color colorMoneda(int)
++ void setMensajeEstado(String)
++ int getX()
++ int getY()
++ int getAncho()
++ int getAlto()
+}
+
+
+class src.Productos.Producto {
+- String nombre
+- int ID
+- int precio
+- int cantidad
++ int getCantidad()
++ int getID()
++ String getNombre()
++ int getPrecio()
+}
+
+
+abstract class src.Productos.Bebidas.Bebida {
++ {abstract}String getSabor()
+}
+
+class src.Maquina {
+- int id
+- Deposito<Bebida> cocacola
+- Deposito<Bebida> sprite
+- Deposito<Bebida> fanta
+- Deposito<Dulce> snickers
+- Deposito<Dulce> super8
+- Deposito<Moneda> monVuelto
++ Producto comprarProducto(Moneda,Seleccion)
++ Moneda getVuelto()
++ int getId()
++ Deposito<Bebida> getDepositoCocaCola()
++ Deposito<Bebida> getDepositoSprite()
++ Deposito<Bebida> getDepositoFanta()
++ Deposito<Dulce> getDepositoSnickers()
++ Deposito<Dulce> getDepositoSuper8()
++ Deposito<Moneda> getDepositoVuelto()
++ void rellenarDepositos()
+}
+
+
+class src.Excepciones.PagoIncorrectoException {
+}
+
+
+src.Excepciones.Exception <|-- src.Excepciones.PagoInsuficienteException
+src.Productos.Producto <|-- src.Productos.Dulces.Dulce
+javax.swing.JFrame <|-- src.vista.Ventana
+src.vista.JPanel <|-- src.vista.PanelPrincipal
+src.Productos.Dulces.Dulce <|-- src.Productos.Dulces.Super8
+src.Productos.Dulces.Dulce <|-- src.Productos.Dulces.Snickers
+src.Excepciones.Exception <|-- src.Excepciones.NoHayProductoException
+src.Productos.Bebidas.Bebida <|-- src.Productos.Bebidas.CocaCola
+src.Monedas.Comparable <|.. src.Monedas.Moneda
+src.vista.JPanel <|-- src.vista.PanelComprador
+src.Productos.Bebidas.Bebida <|-- src.Productos.Bebidas.Sprite
+src.Monedas.Moneda <|-- src.Monedas.Moneda1000
+src.Monedas.Moneda <|-- src.Monedas.Moneda500
+src.Monedas.Moneda <|-- src.Monedas.Moneda100
+src.Productos.Bebidas.Bebida <|-- src.Productos.Bebidas.Fanta
+src.vista.JPanel <|-- src.vista.PanelExpendedor
+src.Productos.Producto <|-- src.Productos.Bebidas.Bebida
+src.Excepciones.Exception <|-- src.Excepciones.PagoIncorrectoException
+@enduml
