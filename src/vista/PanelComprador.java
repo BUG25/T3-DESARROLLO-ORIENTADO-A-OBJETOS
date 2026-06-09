@@ -87,6 +87,42 @@ public class PanelComprador extends JPanel {
         for (int i = 0; i < 4; i++) monedero.add(new Moneda500());
         for (int i = 0; i < 5; i++) monedero.add(new Moneda100());
     }
+    /**
+     * Compacta solo las monedas de $100 para claridad visual y reuso.
+     * Mantiene intactas las monedas de $500 y $1000.
+     */
+    private void compactarMonedero() {
+        int cont100 = 0;
+        int cont500 = 0;
+        int cont1000 = 0;
+
+        for (Moneda m : monedero) {
+            if (m.getValor() == 100) cont100++;
+            else if (m.getValor() == 500) cont500++;
+            else if (m.getValor() == 1000) cont1000++;
+        }
+
+        int nuevas500 = cont100 / 5;
+        cont100 = cont100 % 5;
+
+        cont500 += nuevas500;
+
+        monedero.clear();
+        for (int i = 0; i < cont100; i++) monedero.add(new Moneda100());
+        for (int i = 0; i < cont500; i++) monedero.add(new Moneda500());
+        for (int i = 0; i < cont1000; i++) monedero.add(new Moneda1000());
+
+        actualizarSaldoDesdeMonedero();
+    }
+
+    /** Actualiza el saldo basado en el monedero actual */
+    private void actualizarSaldoDesdeMonedero() {
+        int nuevoSaldo = 0;
+        for (Moneda m : monedero) {
+            nuevoSaldo += m.getValor();
+        }
+        this.saldo = nuevoSaldo;
+    }
 
     /**
      * Dibuja el comprador: cuerpo, zonas de selección, monedero, historial.
@@ -290,7 +326,21 @@ public class PanelComprador extends JPanel {
             return;
         }
 
-        saldo -= monedaSeleccionada.getValor();
+        boolean monedaEncontrada = false;
+        for (int i = 0; i < monedero.size(); i++) {
+            if (monedero.get(i).getValor() == monedaSeleccionada.getValor()) {
+                monedero.remove(i);
+                monedaEncontrada = true;
+                break;
+            }
+        }
+
+        if (!monedaEncontrada) {
+            mensajeEstado = "No tienes esa moneda en el monedero";
+            return;
+        }
+        actualizarSaldoDesdeMonedero();
+
         try {
             Producto p = maquina.comprarProducto(monedaSeleccionada, seleccionActual);
             if (p != null) {
@@ -305,35 +355,51 @@ public class PanelComprador extends JPanel {
             historial.add("✗ " + ex.getMessage());
             mensajeEstado = ex.getMessage();
 
-            // recuperar moneda devuelta al vuelto
-            Moneda m = maquina.getVuelto();
-            while (m != null) { monedero.add(m); saldo += m.getValor(); m = maquina.getVuelto(); }
-        }
-        monedaSeleccionada = null;
-        if (panelPrincipal != null) {
-            panelPrincipal.repaint();
-        } else if (panelExpendedor != null) {
-            // Fallback: intentar repaint del expendedor
-            panelExpendedor.repaint();
+            monedero.add(monedaSeleccionada);
+
+            ArrayList<Moneda> vueltoTemp = maquina.tomarTodoElVuelto();
+            int totalVuelto = 0;
+            int cantMonedas = vueltoTemp.size();
+
+            for (Moneda m : vueltoTemp) {
+                totalVuelto += m.getValor();
+            }
+            if (totalVuelto > 0) {
+                monedero.addAll(vueltoTemp);
+                historial.add("↺ Devueltas: $" + totalVuelto + " (" + cantMonedas + " monedas)");
+            }
         }
     }
 
     /** Recoge todas las monedas de vuelto de la máquina y las agrega al monedero. */
     private void tomarVuelto() {
-        Moneda m = maquina.getVuelto();
+        List<Moneda> vueltoTemp = maquina.tomarTodoElVuelto();
         int total = 0;
-        int contador = 0;
-        while (m != null) {
-            monedero.add(m);
-            saldo += m.getValor();
+        int contador = vueltoTemp.size();
+        for (Moneda m : vueltoTemp) {
             total += m.getValor();
-            contador++;
-            m = maquina.getVuelto();
         }
         if (total > 0) {
-            historial.add("← Vuelto: $" + total + " (" + contador + " monedas)");
+            // Mostrar detalle de las monedas devueltas
+            int c100 = 0, c500 = 0, c1000 = 0;
+            for (Moneda mon : vueltoTemp) {
+                if (mon.getValor() == 100) c100++;
+                else if (mon.getValor() == 500) c500++;
+                else if (mon.getValor() == 1000) c1000++;
+            }
+            String detalleMsg = "";
+            if (c1000 > 0) detalleMsg += c1000 + "x$1000 ";
+            if (c500 > 0) detalleMsg += c500 + "x$500 ";
+            if (c100 > 0) detalleMsg += c100 + "x$100";
+
+            monedero.addAll(vueltoTemp);
+
+            historial.add("← Vuelto: $" + total + " → " + detalleMsg.trim());
             mensajeEstado = "Vuelto recogido: $" + total;
-        } else {
+
+            compactarMonedero();
+        }
+        else {
             mensajeEstado = "No hay vuelto pendiente";
         }
         if (panelPrincipal != null) {

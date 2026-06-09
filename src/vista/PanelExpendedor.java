@@ -82,6 +82,7 @@ public class PanelExpendedor extends JPanel {
     public void actualizarProductoEntregado(Producto p) {
         this.productoEntregado = p;
         this.mensajeEstado = "Producto entregado: " + p.getNombre();
+        repaint();
     }
     /**
      * Dibuja el expendedor completo: cuerpo, cristal, depósitos, zonas de entrega y vuelto.
@@ -243,7 +244,7 @@ public class PanelExpendedor extends JPanel {
         g2.drawString("VUELTO", ax + 5, ay + 12);
 
         // Mostrar monedas como círculos
-        ArrayList<Moneda> monedas = maquina.getDepositoVuelto().getLista();
+        ArrayList<Moneda> monedas = maquina.getVueltoList();
         int cx = ax + 8;
         int cy = ay + 20;
         int radio = 12;
@@ -263,9 +264,11 @@ public class PanelExpendedor extends JPanel {
                 g2.setStroke(new BasicStroke(1));
                 g2.drawOval(cx, cy, radio * 2, radio * 2);
                 g2.setColor(Color.WHITE);
-                g2.setFont(new Font("Arial", Font.BOLD, 7));
-                String label = (m.getValor() / 100) + "$";
-                g2.drawString(label, cx + 6, cy + 16);
+                g2.setFont(new Font("Arial", Font.BOLD, 8));
+                String label = "$" + m.getValor();
+                int lx = cx + (radio * 2 - g2.getFontMetrics().stringWidth(label)) / 2;
+                int ly = cy + 15;
+                g2.drawString(label, lx, ly);
 
                 cx += radio * 2 + 3;
                 if (cx > ax + vueltoAncho - 30) {
@@ -308,6 +311,7 @@ public class PanelExpendedor extends JPanel {
             } else {
                 mensajeEstado = "Todos los depósitos tienen stock";
             }
+            repaint();
             return true;
         }
         return false;
@@ -315,9 +319,9 @@ public class PanelExpendedor extends JPanel {
 
     /** @return color de una moneda según su valor */
     private Color colorMoneda(int valor) {
-        if (valor == 100)  return new Color(180, 140, 60);
-        if (valor == 500)  return new Color(160, 160, 170);
-        return new Color(220, 190, 80); // 1000
+        if (valor == 100)  return new Color(160, 120, 40);
+        if (valor == 500)  return new Color(150, 150, 160);
+        return new Color(210, 180, 60); // 1000
     }
 
     /** Fija el mensaje de estado visible en la parte inferior. */

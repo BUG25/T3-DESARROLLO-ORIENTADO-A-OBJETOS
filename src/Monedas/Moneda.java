@@ -32,12 +32,11 @@ public abstract class Moneda implements Comparable<Moneda> {
     public int compareTo(Moneda otra){ return Integer.compare(this.valor, otra.valor);}
     /** compra esta moneda con otra segun su valor
     * requisito para poder usar Collections.sort()
-    * @param la moneda con la que se intenta comprar
     * @return un num negativo, cero o int positivo si la moneda es <, = o > que la moneda especificada */
 
     @Override
     public String toString(){
-        return "Valor moneda =" + valor + ", Seri e=" + serie;
+        return "Moneda{valor=" + valor + ", serie=" + serie + "}";
         /** @return string con el valor y el hashcode como número de serie */
     }
 }

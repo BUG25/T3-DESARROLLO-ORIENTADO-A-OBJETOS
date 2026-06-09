@@ -34,6 +34,27 @@ public class Deposito<T> {
     }
 
     /**
+     * Funciona como un getter del primer articulo de la lista
+     * @return el primer elemento de la lista(deposito)
+     */
+    public T peek() {
+        if (lista.isEmpty()) {
+            return null;
+        }
+        return lista.get(0);
+    }
+
+    /**
+     * Vacia la lista completa
+     * @return una copia de la lista
+     */
+    public ArrayList<T> vaciar() {
+        ArrayList<T> copia = new ArrayList<>(lista);
+        lista.clear();
+        return copia;
+    }
+
+    /**
      * Retorna el número de elementos en el depósito.
      * @return cantidad de elementos
      */
