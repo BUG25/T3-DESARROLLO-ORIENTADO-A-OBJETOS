@@ -1,0 +1,9 @@
+# Tarea 3- Interfez grafica
+
+## Integrantes
+- Diego Alonso Alday Cortés
+- Josefa Valentina Arriagada Valiente
+- Trinidad Agustina Castro Castro
+
+## Diagrama UML
+![UML](.)
