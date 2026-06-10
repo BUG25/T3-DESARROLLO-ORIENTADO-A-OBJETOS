@@ -6,7 +6,7 @@
 - Trinidad Agustina Castro Castro
 
 ## Diagrama UML
-![UML](UML.png)
+![UML](UML2.png)
 
 ## Estructura del proyecto 
 ![UML](Estructura.png)
