@@ -73,6 +73,8 @@ class src.vista.PanelComprador {
 + void setPanelExpendedor(PanelExpendedor)
 + void setPanelPrincipal(PanelPrincipal)
 - void inicializarMonedero()
+- void compactarMonedero()
+- void actualizarSaldoDesdeMonedero()
 + void paintComponent(Graphics)
 + boolean handleMouseClick(MouseEvent)
 - void realizarCompra()
@@ -91,6 +93,8 @@ class src.Depositos.Deposito {
 - ArrayList<T> lista
 + void add(T)
 + T get()
++ T peek()
++ ArrayList<T> vaciar()
 + int size()
 + boolean isEmpty()
 + ArrayList<T> getLista()
@@ -188,6 +192,9 @@ class src.Maquina {
 - Deposito<Moneda> monVuelto
 + Producto comprarProducto(Moneda,Seleccion)
 + Moneda getVuelto()
++ Moneda peekVuelto()
++ ArrayList<Moneda> getVueltoList()
++ ArrayList<Moneda> tomarTodoElVuelto()
 + int getId()
 + Deposito<Bebida> getDepositoCocaCola()
 + Deposito<Bebida> getDepositoSprite()
